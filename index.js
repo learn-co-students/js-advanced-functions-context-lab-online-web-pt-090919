@@ -45,14 +45,14 @@ let createTimeOutEvent = function(time) {
     return createTimeEvent.call(this, time, "Out");
 };
 
-let hoursWorkedOnDate = function(day) {
+function hoursWorkedOnDate(day) {
     let timeIn = this.timeInEvents.find(record => record.date === day).hour;
     let timeOut = this.timeOutEvents.find(record => record.date === day).hour;
     return (timeOut-timeIn)/100;
 };
 
 let wagesEarnedOnDate = function(day) {
-    return hoursWorkedOnDate.call(this, day)*this.payPerHour;
+    return this.hoursWorkedOnDate.(day)*this.payPerHour;
 };
 
 let allWagesFor = function () {
