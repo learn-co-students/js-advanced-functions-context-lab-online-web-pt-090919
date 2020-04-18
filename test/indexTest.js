@@ -54,17 +54,17 @@ describe("The payroll system", function () {
 
       it("its implementation makes use of of the createEmployeeRecord function", function(){
         let mySpy = chai.spy.on(window, "createEmployeeRecord")
-        createEmployeeRecords([["Mister", "Matt", "Chief Awesomeness Offiser", 1000]])
+        createEmployeeRecords.call([["Mister", "Matt", "Chief Awesomeness Offiser", 1000]])
         expect(mySpy).to.have.been.called()
       })
 
       it("creates two records", function () {
-        let employeeRecords = createEmployeeRecords(twoRows)
+        let employeeRecords = createEmployeeRecords.call(twoRows)
         expect(employeeRecords.length).to.equal(2)
       })
 
       it("correctly assigns the first names", function () {
-        let employeeRecords = createEmployeeRecords(twoRows)
+        let employeeRecords = createEmployeeRecords.call(twoRows)
         let nameExtractor = function (e) { return e.firstName }
         expect(employeeRecords.map(nameExtractor)).to.eql(["moe", "bartholomew"]);
       })
@@ -255,8 +255,8 @@ describe("The payroll system", function () {
             ["Loki", "Laufeysson-Odinsson", "HR Representative", 35],
             ["Natalia", "Romanov", "CEO", 150]
           ]
-          expect(createEmployeeRecords(src).length).to.eql(2)
-          expect(createEmployeeRecords(src).map(function (e) {
+          expect(createEmployeeRecords.call(src).length).to.eql(2)
+          expect(createEmployeeRecords.call(src).map(function (e) {
             return e.firstName
           })).to.eql(["Loki", "Natalia"])
         })
@@ -273,7 +273,7 @@ describe("The payroll system", function () {
           ["Loki", "Laufeysson-Odinsson", "HR Representative", 35],
           ["Natalia", "Romanov", "CEO", 150]
         ]
-        let emps = createEmployeeRecords(src)
+        let emps = createEmployeeRecords.call(src)
         let loki = findEmployeeByFirstName(emps, "Loki")
         expect(loki.familyName).to.equal("Laufeysson-Odinsson")
       })
@@ -321,7 +321,7 @@ describe("The payroll system", function () {
           })
 
           it("correctly sums the payroll burden to $11,880 when passed an array of employee records", function () {
-            let employeeRecords = createEmployeeRecords(csvDataEmployees)
+            let employeeRecords = createEmployeeRecords.call(csvDataEmployees)
             employeeRecords.forEach(function (rec) {
               let timesInRecordRow = csvTimesIn.find(function (row) {
                 return rec.firstName === row[0]
