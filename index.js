@@ -1,56 +1,63 @@
 /* Your Code Here */
 
-function createEmployeeRecord(args){
+let createEmployeeRecord = function(row){
   return {
-    firstName: args[0],
-    familyName: args[1],
-    title: args[2],
-    payPerHour: args[3],
+    firstName: row[0],
+    familyName: row[1],
+    title: row[2],
+    payPerHour: row[3],
     timeInEvents: [],
     timeOutEvents: []
   }
 }
 
-function createEmployeeRecords(record){
-  return record.map(function(args){
-    return createEmployeeRecord(args)
+let createEmployeeRecords = function(record){
+  return record.map(function(row){
+    return createEmployeeRecord(row)
   })
 }
 
-function createTimeInEvent(employee, dateStamp){
-  let [date, hour] = dateStamp.split(" ");
-  
-  employee.timeInEvent.push({
-    type: "TimeIn",
-    hour: parseInt(hour, 10),
-    date
-  })
-  return employee
+let createTimeInEvent = function(dateStamp){
+    let [date, hour] = dateStamp.split(' ')
+
+    this.timeInEvents.push({
+        type: "TimeIn",
+        hour: parseInt(hour, 10),
+        date,
+    })
+
+    return this
 }
 
-function createTimeOutEvent(employee, dateStamp){
-  let [date, hour] = dateStamp.split(" ");
-  employee.timeOutEvent.push({
-    type: "TimeOut",
-    hour: parseInt(hour, 10),
-    date
-  })
-  return employee
+
+let createTimeOutEvent = function(dateStamp){
+    let [date, hour] = dateStamp.split(' ')
+
+    this.timeOutEvents.push({
+        type: "TimeOut",
+        hour: parseInt(hour, 10),
+        date,
+    })
+
+    return this
 }
 
-function hoursWorkedOnDate(employee, soughtDate){
-  let inEvent = employee.timeInEvent.find(function(e){
-    return e.date === soughtDate
-  })
-  let outEvent = employee.timeOutEvent.find(function(e){
-    return e.date === soughtDate
-  })
-  return (outEvent.hour - inEvent.hour) / 100
+let hoursWorkedOnDate = function(soughtDate){
+    let inEvent = this.timeInEvents.find(function(e){
+        return e.date === soughtDate
+    })
+
+    let outEvent = this.timeOutEvents.find(function(e){
+        return e.date === soughtDate
+    })
+
+    return (outEvent.hour - inEvent.hour) / 100
 }
 
-function wagesEarnedOnDate(employee, soughtDate){
-  let wage = hoursWorkedOnDate(employee, soughtDate) * employee.payPerHour;
-  return parseFloat(wage.toString())
+let wagesEarnedOnDate = function(dateSought){
+    let rawWage = hoursWorkedOnDate.call(this, dateSought)
+        * this.payPerHour
+    return parseFloat(rawWage.toString())
 }
 
 function findEmployeeByFirstName(srcArray, firstName){
@@ -60,12 +67,12 @@ function findEmployeeByFirstName(srcArray, firstName){
   return undefined
 }
 
-function calculatePayroll(record){
-  return record.reduce(function(memo, i){
-    return memo + wagesEarnedOnDate(i)
-  }, 0)
+let calculatePayroll = function(arrayOfEmployeeRecords){
+    return arrayOfEmployeeRecords.reduce(function(memo, rec){
+        return memo + allWagesFor.call(rec)
+    }, 0)
 }
-
+  
 /*
  We're giving you this function. Take a look at it, you might see some usage
  that's new and different. That's because we're avoiding a well-known, but
@@ -75,14 +82,14 @@ function calculatePayroll(record){
  for you to use if you need it!
  */
 
-let allWagesFor = function () {
-    let eligibleDates = this.timeInEvents.map(function (e) {
+let allWagesFor = function(){
+    let eligibleDates = this.timeInEvents.map(function(e){
         return e.date
     })
 
-    let payable = eligibleDates.reduce(function (memo, d) {
+    let payable = eligibleDates.reduce(function(memo, d){
         return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
+    }.bind(this), 0)
 
     return payable
 }
