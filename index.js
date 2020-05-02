@@ -10,7 +10,7 @@
  */
 
 const createEmployeeRecord = (array) => {
-    return {
+    let employee = {
         firstName: array[0],
         familyName: array[1],
         title: array[2],
@@ -18,6 +18,7 @@ const createEmployeeRecord = (array) => {
         timeInEvents: [],
         timeOutEvents: []
     }
+    return employee
 }
 
 let createEmployeeRecords = (data) => {
@@ -25,25 +26,25 @@ let createEmployeeRecords = (data) => {
 }
 
 let createTimeInEvent = (dateTime) => {
-    let [date, time] = dateTime.split(' ')
-    this.timeInEvents.push({
-        type: 'TimeIn',
-        date,
-        hour: parseInt(time, 10)
-    })
+    let timeIn = {
+        type: "TimeIn",
+        date: dateTime.split(' ')[0],
+        hour: parseInt(dateTime.split(' ')[1], 10)
+    } 
+    this.timeInEvents.push(timeIn)
     return this
 }
 
 let createTimeOutEvent = (dateTime) => {
-    let [date, time] = dateTime.split(' ')
-    this.timeOutEvents.push({
-        type: 'TimeOut',
-        date,
-        hour: parseInt(time, 10)
-    })
-    return this
+    let timeOut = {
+        type: "TimeOut",
+        date: dateTime.split(' ')[0],
+        hour: parseInt(dateTime.split(' ')[1], 10)
+    }
+    this.timeOutEvents.push(timeOut)
+    return timeOut
 }
-
+    
 let hoursWorkedOnDate = (dateMatch) => {
     let timeIn = this.timeInEvents.find(element => {
         return element.date === dateMatch
