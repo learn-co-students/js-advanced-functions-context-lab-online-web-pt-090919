@@ -9,53 +9,51 @@
  for you to use if you need it!
  */
 
-const createEmployeeRecord = (array) => {
+const createEmployeeRecord = function(array){
     let employee = {
         firstName: array[0],
         familyName: array[1],
         title: array[2],
         payPerHour: array[3],
         timeInEvents: [],
-        timeOutEvents: []
+        timeOutEvents: [],
     }
     return employee
 }
 
-let createEmployeeRecords = (data) => {
+let createEmployeeRecords = function(data) {
     return data.map(info => createEmployeeRecord(info))
 }
 
-let createTimeInEvent = (dateTime) => {
-    let timeIn = {
+let createTimeInEvent = function(dateTime){
+    let [date, hour] = dateTime.split(' ')
+
+    this.timeInEvents.push({
         type: "TimeIn",
-        date: dateTime.split(' ')[0],
-        hour: parseInt(dateTime.split(' ')[1], 10)
-    } 
-    this.timeInEvents.push(timeIn)
+        hour: parseInt(hour, 10),
+        date,
+    })
     return this
 }
 
-let createTimeOutEvent = (dateTime) => {
-    let timeOut = {
+let createTimeOutEvent = function(dateTime){
+    let [date, hour] = dateTime.split(' ')
+
+    this.timeOutEvents.push({
         type: "TimeOut",
-        date: dateTime.split(' ')[0],
-        hour: parseInt(dateTime.split(' ')[1], 10)
-    }
-    this.timeOutEvents.push(timeOut)
-    return timeOut
+        hour: parseInt(hour, 10),
+        date,
+    })
+    return this
 }
     
-let hoursWorkedOnDate = (dateMatch) => {
-    let timeIn = this.timeInEvents.find(element => {
-        return element.date === dateMatch
-    })
-    let timeOut = this.timeOutEvent.find(element => {
-        return element.date === dateMatch
-    })
+let hoursWorkedOnDate = function(dateMatch){
+    let timeIn = this.timeInEvents.find(element => element.date === dateMatch)
+    let timeOut = this.timeOutEvents.find(element => element.date === dateMatch)
     return (timeOut.hour - timeIn.hour) / 100
 }
 
-let wagesEarnedOnDate = (dates) => {
+let wagesEarnedOnDate = function(dates) {
    return (hoursWorkedOnDate.call(this, dates) * this.payPerHour)
 }
 let allWagesFor = function () {
@@ -70,11 +68,12 @@ let allWagesFor = function () {
     return payable
 }
 
-let calculatePayroll = (records) => {
+let calculatePayroll = function(record) {
     return record.reduce(function(amount, employee) {
         return amount + allWagesFor.call(employee)
     }, 0)
 }
-let findEmployeeByfirstName = (employee, firstName) => {
-    return employee.find(employee => employee.firstName === firstName )
+
+let findEmployeeByFirstName = function(employees, firstNameString) {
+    return employees.find(employee => employee.firstName === firstNameString )
 }
